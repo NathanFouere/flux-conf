@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: strategia
+  labels:
+    app.kubernetes.io/name: strategia
+    app.kubernetes.io/managed-by: flux

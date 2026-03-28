@@ -1,0 +1,25 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: strategia
+  namespace: strategia
+spec:
+  values:
+    replicaCount: 1
+    
+    image:
+      repository: nathanfouere/strategia-server
+      pullPolicy: IfNotPresent
+      tag: "latest"
+    
+    service:
+      type: ClusterIP
+      port: 8080
+      targetPort: 8080
+    
+    config:
+      httpPort: "8080"
+      timeBetweenGame: "10"
+      tickerMainMenuSeconds: "1"
+      tickerUpdateGameMs: "50"
+      gameStartDelaySec: "10"

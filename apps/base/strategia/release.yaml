@@ -1,0 +1,32 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: strategia
+  namespace: strategia
+spec:
+  releaseName: strategia
+  chart:
+    spec:
+      chart: strategia
+      sourceRef:
+        kind: HelmRepository
+        name: strategia
+  interval: 50m
+  install:
+    remediation:
+      retries: 3
+  values:
+    image:
+      repository: strategia-server
+      pullPolicy: Never
+      tag: ""
+    service:
+      type: ClusterIP
+      port: 8080
+      targetPort: 8080
+    config:
+      httpPort: "8080"
+      timeBetweenGame: "10"
+      tickerMainMenuSeconds: "1"
+      tickerUpdateGameMs: "50"
+      gameStartDelaySec: "10"
