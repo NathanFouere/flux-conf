@@ -5,18 +5,16 @@ metadata:
   namespace: strategia
 spec:
   values:
-    replicaCount: 1
-    
     image:
       repository: nathanfouere/strategia-server
       pullPolicy: IfNotPresent
       tag: "latest"
-    
+
     service:
       type: ClusterIP
       port: 8080
       targetPort: 8080
-    
+
     config:
       httpPort: "8080"
       timeBetweenGame: "10"
