@@ -19,7 +19,7 @@ spec:
     image:
       repository: strategia-server
       pullPolicy: Never
-      tag: ""
+      tag: "0.1.0"
     service:
       type: ClusterIP
       port: 8080
