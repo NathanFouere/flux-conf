@@ -5,5 +5,4 @@ metadata:
   namespace: strategia
 spec:
   interval: 5m
-  url: oci://registry-1.docker.io/nathanfouere
-  type: oci
+  url: https://nathanfouere.github.io/strategia
