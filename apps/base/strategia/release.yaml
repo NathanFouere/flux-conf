@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: strategia
-      version: "0.1.0"
+      version: "0.1.1"
       sourceRef:
         kind: HelmRepository
         name: strategia
@@ -17,17 +17,27 @@ spec:
     remediation:
       retries: 3
   values:
-    image:
-      repository: strategia-server
-      pullPolicy: Never
-      tag: "0.1.0"
-    service:
-      type: ClusterIP
-      port: 8080
-      targetPort: 8080
-    config:
-      httpPort: "8080"
-      timeBetweenGame: "10"
-      tickerMainMenuSeconds: "1"
-      tickerUpdateGameMs: "50"
-      gameStartDelaySec: "10"
+    server:
+      image:
+        repository: nathanfouere/strategia-server
+        pullPolicy: IfNotPresent
+        tag: "latest"
+      service:
+        type: ClusterIP
+        port: 8080
+        targetPort: 8080
+      config:
+        httpPort: "8080"
+        timeBetweenGame: "10"
+        tickerMainMenuSeconds: "1"
+        tickerUpdateGameMs: "50"
+        gameStartDelaySec: "10"
+    client:
+      image:
+        repository: nathanfouere/strategia-client
+        pullPolicy: IfNotPresent
+        tag: "latest"
+      service:
+        type: ClusterIP
+        port: 3000
+        targetPort: 3000
