@@ -3,9 +3,6 @@ kind: Kustomization
 resources:
   - ../base/strategia
 patches:
-  - path: podinfo-values.yaml
-    target:
-      kind: HelmRelease
   - path: strategia-values.yaml
     target:
       kind: HelmRelease
