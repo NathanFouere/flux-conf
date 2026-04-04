@@ -27,7 +27,7 @@ spec:
       image:
         repository: nathanfouere/strategia-client
         pullPolicy: IfNotPresent
-        tag: "latest"
+        tag: "main"
 
       service:
         type: ClusterIP
