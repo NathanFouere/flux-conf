@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: siyuan
+  labels:
+    app.kubernetes.io/name: siyuan
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: siyuan
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: siyuan
+    spec:
+      containers:
+        - name: siyuan
+          image: b3log/siyuan:latest
+          args:
+            - --workspace=/siyuan/workspace/
+            - --accessAuthCode=$(SIYUAN_ACCESS_AUTH_CODE)
+          env:
+            - name: SIYUAN_ACCESS_AUTH_CODE
+              valueFrom:
+                secretKeyRef:
+                  name: siyuan-secrets
+                  key: access-auth-code
+            - name: TZ
+              value: "Europe/Paris"
+          ports:
+            - name: http
+              containerPort: 6806
+              protocol: TCP
+          volumeMounts:
+            - name: siyuan-data
+              mountPath: /siyuan/workspace
+      volumes:
+        - name: siyuan-data
+          persistentVolumeClaim:
+            claimName: siyuan-data

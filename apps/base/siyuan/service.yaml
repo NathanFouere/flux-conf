@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: siyuan
+  labels:
+    app.kubernetes.io/name: siyuan
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 6806
+      targetPort: 6806
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: siyuan
