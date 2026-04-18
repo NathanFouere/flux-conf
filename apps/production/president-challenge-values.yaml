@@ -1,0 +1,28 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: president-challenge
+  namespace: president-challenge
+spec:
+  values:
+    server:
+      image:
+        repository: nathanfouere/president-challenge-server
+        pullPolicy: IfNotPresent
+        tag: "latest"
+
+      service:
+        type: ClusterIP
+        port: 3333
+        targetPort: 3333
+
+    client:
+      image:
+        repository: nathanfouere/president-challenge-client
+        pullPolicy: IfNotPresent
+        tag: "latest"
+
+      service:
+        type: ClusterIP
+        port: 3000
+        targetPort: 3000
