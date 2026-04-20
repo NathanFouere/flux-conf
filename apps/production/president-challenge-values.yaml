@@ -9,20 +9,10 @@ spec:
       image:
         repository: nathanfouere/president-challenge-server
         pullPolicy: IfNotPresent
-        tag: "latest"
-
-      service:
-        type: ClusterIP
-        port: 3333
-        targetPort: 3333
+        tag: "main"
 
     client:
       image:
         repository: nathanfouere/president-challenge-client
         pullPolicy: IfNotPresent
-        tag: "latest"
-
-      service:
-        type: ClusterIP
-        port: 3000
-        targetPort: 3000
+        tag: "main"

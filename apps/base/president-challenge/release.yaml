@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: president-challenge
-      version: "0.0.4"
+      version: "0.0.5"
       sourceRef:
         kind: HelmRepository
         name: president-challenge
@@ -16,50 +16,3 @@ spec:
   install:
     remediation:
       retries: 3
-  values:
-    server:
-      image:
-        repository: nathanfouere/president-challenge-server
-        pullPolicy: Always
-        tag: "latest"
-      service:
-        type: ClusterIP
-        port: 3333
-        targetPort: 3333
-
-    client:
-      image:
-        repository: nathanfouere/president-challenge-client
-        pullPolicy: Always
-        tag: "latest"
-      service:
-        type: ClusterIP
-        port: 3000
-        targetPort: 3000
-
-    postgres:
-      image:
-        repository: postgres
-        tag: "latest"
-        pullPolicy: Always
-      service:
-        type: ClusterIP
-        port: 5432
-        targetPort: 5432
-      config:
-        user: "postgres"
-
-    minio:
-      image:
-        repository: bitnami/minio
-        tag: "2022"
-        pullPolicy: Always
-      service:
-        type: ClusterIP
-        apiPort: 9000
-        consolePort: 9001
-      config:
-        consoleAddress: ":9001"
-
-    secrets:
-      name: "president-challenge-secrets"

@@ -9,27 +9,10 @@ spec:
       image:
         repository: nathanfouere/strategia-server
         pullPolicy: IfNotPresent
-        tag: "latest"
-
-      service:
-        type: ClusterIP
-        port: 8080
-        targetPort: 8080
-
-      config:
-        httpPort: "8080"
-        timeBetweenGame: "10"
-        tickerMainMenuSeconds: "1"
-        tickerUpdateGameMs: "50"
-        gameStartDelaySec: "10"
+        tag: "main"
 
     client:
       image:
         repository: nathanfouere/strategia-client
         pullPolicy: IfNotPresent
         tag: "main"
-
-      service:
-        type: ClusterIP
-        port: 3000
-        targetPort: 3000
