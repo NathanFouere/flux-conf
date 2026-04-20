@@ -4,7 +4,6 @@ resources:
   - ../base/strategia
   - ../base/siyuan
   - ../base/president-challenge
-  - ../base/openclaw
 patches:
   - path: strategia-values.yaml
     target:
