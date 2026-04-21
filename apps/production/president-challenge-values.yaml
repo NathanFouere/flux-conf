@@ -8,11 +8,11 @@ spec:
     server:
       image:
         repository: nathanfouere/president-challenge-server
-        pullPolicy: IfNotPresent
+        pullPolicy: Always
         tag: "main"
 
     client:
       image:
         repository: nathanfouere/president-challenge-client
-        pullPolicy: IfNotPresent
+        pullPolicy: Always
         tag: "main"

@@ -8,7 +8,7 @@ spec:
     server:
       image:
         repository: nathanfouere/strategia-server
-        pullPolicy: IfNotPresent
+        pullPolicy: Always
         tag: "latest"
 
       service:
@@ -26,7 +26,7 @@ spec:
     client:
       image:
         repository: nathanfouere/strategia-client
-        pullPolicy: IfNotPresent
+        pullPolicy: Always
         tag: "main"
 
       service:
