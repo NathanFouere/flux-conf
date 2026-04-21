@@ -17,4 +17,4 @@ spec:
         pullPolicy: Always
         tag: "main"
       config:
-        baseURLProxyServer: "https://api-president-challenge.nathan-fouere.com"
+        baseURLProxyServer: "https://api-president-challenge.nathan-fouere.com/api"
