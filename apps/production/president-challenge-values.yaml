@@ -16,3 +16,5 @@ spec:
         repository: nathanfouere/president-challenge-client
         pullPolicy: Always
         tag: "main"
+      config:
+        baseURLProxyServer: "https://api-president-challenge.nathan-fouere.com"
