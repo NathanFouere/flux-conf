@@ -4,6 +4,7 @@ resources:
   - ../base/strategia
   - ../base/siyuan
   - ../base/president-challenge
+  - ../base/baikal
 patches:
   - path: strategia-values.yaml
     target:
