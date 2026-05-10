@@ -1,0 +1,18 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: website
+  namespace: website
+spec:
+  releaseName: website
+  chart:
+    spec:
+      chart: website
+      version: "0.1.0"
+      sourceRef:
+        kind: HelmRepository
+        name: website
+  interval: 50m
+  install:
+    remediation:
+      retries: 3
