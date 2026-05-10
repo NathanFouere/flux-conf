@@ -15,3 +15,7 @@ patches:
     target:
       kind: HelmRelease
       name: president-challenge
+  - path: website-values.yaml
+    target:
+      kind: HelmRelease
+      name: website

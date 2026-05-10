@@ -1,0 +1,11 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: website
+  namespace: website
+spec:
+  values:
+    image:
+      repository: nathanfouere/website
+      pullPolicy: Always
+      tag: "main"
