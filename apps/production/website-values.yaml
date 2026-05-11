@@ -8,4 +8,4 @@ spec:
     image:
       repository: nathanfouere/website
       pullPolicy: Always
-      tag: "main" # {"$imagepolicy": "website:website"}
+      tag: "docker.io/nathanfouere/website:0.0.12" # {"$imagepolicy": "website:website"}
