@@ -5,6 +5,7 @@ resources:
   - ../base/president-challenge
   - ../base/baikal
   - ../base/website
+  - ../base/strategia
 patches:
   - path: president-challenge-values.yaml
     target:
@@ -14,3 +15,7 @@ patches:
     target:
       kind: HelmRelease
       name: website
+  - path: strategia-values.yaml
+    target:
+      kind: HelmRelease
+      name: strategia
