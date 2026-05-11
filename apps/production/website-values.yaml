@@ -5,7 +5,5 @@ metadata:
   namespace: website
 spec:
   values:
-    image:
-      repository: nathanfouere/website
-      pullPolicy: Always
-      tag: "docker.io/nathanfouere/website:0.0.12" # {"$imagepolicy": "website:website"}
+    image: nathanfouere/website:0.0.1 # {"$imagepolicy": "website:website"}
+    pullPolicy: Always
