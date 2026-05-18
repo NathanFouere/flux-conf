@@ -6,6 +6,7 @@ resources:
   - ../base/baikal
   - ../base/website
   - ../base/strategia
+  - ../base/media-center
 patches:
   - path: president-challenge-values.yaml
     target:
