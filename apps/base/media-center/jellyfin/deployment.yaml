@@ -15,6 +15,13 @@ spec:
       labels:
         app.kubernetes.io/name: jellyfin
     spec:
+      initContainers:
+        - name: create-dirs
+          image: busybox
+          command: ['sh', '-c', 'mkdir -p /data/videos/movies /data/videos/shows']
+          volumeMounts:
+            - name: videos
+              mountPath: /data/videos
       containers:
         - name: jellyfin
           image: jellyfin/jellyfin
