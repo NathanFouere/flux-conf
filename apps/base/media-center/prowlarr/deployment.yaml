@@ -20,9 +20,9 @@ spec:
           image: lscr.io/linuxserver/prowlarr
           env:
             - name: PUID
-              value: "1057"
+              value: "1000"
             - name: PGID
-              value: "1056"
+              value: "100"
           ports:
             - name: http
               containerPort: 9696
