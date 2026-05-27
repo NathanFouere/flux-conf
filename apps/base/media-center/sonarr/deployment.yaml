@@ -31,8 +31,8 @@ spec:
             - name: config
               mountPath: /config
             - name: videos
-               mountPath: /tv
-               subPath: tv
+              mountPath: /tv
+              subPath: tv
             - name: downloads
               mountPath: /downloads
       volumes:
