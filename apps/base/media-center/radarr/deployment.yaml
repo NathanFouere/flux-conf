@@ -15,13 +15,6 @@ spec:
       labels:
         app.kubernetes.io/name: radarr
     spec:
-      initContainers:
-        - name: init-dirs
-          image: busybox
-          command: ["sh", "-c", "mkdir -p /movies/movies && chown -R 1057:1056 /movies/movies"]
-          volumeMounts:
-            - name: videos
-              mountPath: /movies
       containers:
         - name: radarr
           image: lscr.io/linuxserver/radarr

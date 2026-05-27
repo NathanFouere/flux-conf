@@ -15,13 +15,6 @@ spec:
       labels:
         app.kubernetes.io/name: sonarr
     spec:
-      initContainers:
-        - name: init-dirs
-          image: busybox
-          command: ["sh", "-c", "mkdir -p /tv/tv && chown -R 1057:1056 /tv/tv"]
-          volumeMounts:
-            - name: videos
-              mountPath: /tv
       containers:
         - name: sonarr
           image: lscr.io/linuxserver/sonarr
