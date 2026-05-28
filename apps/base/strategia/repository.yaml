@@ -1,8 +1,0 @@
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: strategia
-  namespace: strategia
-spec:
-  interval: 5m
-  url: https://nathanfouere.github.io/strategia
