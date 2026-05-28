@@ -3,6 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: grafana-pvc
+  namespace: grafana
 spec:
   accessModes:
     - ReadWriteOnce
@@ -16,6 +17,7 @@ metadata:
   labels:
     app: grafana
   name: grafana
+  namespace: grafana
 spec:
   selector:
     matchLabels:
@@ -24,6 +26,7 @@ spec:
     metadata:
       labels:
         app: grafana
+        namespace: grafana
     spec:
       securityContext:
         fsGroup: 472
@@ -71,6 +74,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: grafana
+  namespace: grafana
 spec:
   ports:
     - port: 3000
@@ -80,3 +84,19 @@ spec:
     app: grafana
   sessionAffinity: None
   type: LoadBalancer
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana
+  namespace: grafana
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: kube-system
+  hostnames:
+    - grafana.nathan-fouere.com
+  rules:
+    - backendRefs:
+        - name: grafana
+          port: 3000
