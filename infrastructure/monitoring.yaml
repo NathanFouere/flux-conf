@@ -82,11 +82,33 @@ spec:
     grafana:
       admin:
         existingSecret: monitoring-grafana
+        persistence:
+          enabled: true
+          storageClassName: nfs
+          size: 5Gi
     prometheus:
       prometheusSpec:
         retention: 15d
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: nfs
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 10Gi
         serviceMonitorSelectorNilUsesHelmValues: false # permet de monitorer lensembles des ServiceMonitors de tt les namespaces
     nodeExporter:
       enabled: true
     kubeStateMetrics:
       enabled: true
+    alertmanager:
+      alertmanagerSpec:
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: nfs
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 2Gi
