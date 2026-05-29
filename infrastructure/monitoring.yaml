@@ -82,3 +82,11 @@ spec:
     grafana:
       admin:
         existingSecret: monitoring-grafana
+    prometheus:
+      prometheusSpec:
+        retention: 15d
+        serviceMonitorSelectorNilUsesHelmValues: false # permet de monitorer lensembles des ServiceMonitors de tt les namespaces
+    nodeExporter:
+      enabled: true
+    kubeStateMetrics:
+      enabled: true
