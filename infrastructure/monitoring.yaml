@@ -39,7 +39,7 @@ spec:
     - name: traefik-gateway
       namespace: kube-system
   hostnames:
-    - prometheus.nathan-fouere.com
+    - prometheus-monitoring.nathan-fouere.com
   rules:
     - backendRefs:
         - name: kube-prometheus-stack-prometheus
@@ -55,7 +55,7 @@ spec:
     - name: traefik-gateway
       namespace: kube-system
   hostnames:
-    - prometheus.nathan-fouere.com
+    - prometheus-alerts.nathan-fouere.com
   rules:
     - backendRefs:
         - name: kube-prometheus-stack-alertmanager
