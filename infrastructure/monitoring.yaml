@@ -112,3 +112,23 @@ spec:
               resources:
                 requests:
                   storage: 2Gi
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: custom-alerts
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  groups:
+  - name: custom.rules
+    rules:
+    - alert: HighPodMemoryUsage
+      expr: container_memory_usage_bytes{namespace!=""} / container_spec_memory_limit_bytes{namespace!=""} > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Pod {{ $labels.pod }} memory usage above 90%"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage }} of its memory limit."
