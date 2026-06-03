@@ -82,10 +82,21 @@ spec:
     grafana:
       admin:
         existingSecret: monitoring-grafana
-        persistence:
-          enabled: true
-          storageClassName: nfs
-          size: 5Gi
+      persistence:
+        enabled: true
+        type: sts
+        storageClassName: nfs
+        accessModes:
+          - ReadWriteOnce
+        size: 5Gi
+        finalizers:
+          - kubernetes.io/pvc-protection
+      additionalDataSources:
+        - name: Raspberry-Pi-Prometheus
+          type: prometheus
+          access: proxy
+          url: http://192.168.1.23:9090
+          isDefault: false
     prometheus:
       prometheusSpec:
         retention: 15d
@@ -119,7 +130,7 @@ metadata:
   name: custom-alerts
   namespace: monitoring
   labels:
-    release: prometheus
+    release: kube-prometheus-stack
 spec:
   groups:
   - name: custom.rules
