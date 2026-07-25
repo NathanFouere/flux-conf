@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cleanuparr
+  namespace: media
+  labels:
+    app.kubernetes.io/name: cleanuparr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cleanuparr
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cleanuparr
+    spec:
+      containers:
+        - name: cleanuparr
+          image: ghcr.io/cleanuparr/cleanuparr:latest
+          env:
+            - name: PORT
+              value: "11011"
+            - name: PUID
+              value: "1057"
+            - name: PGID
+              value: "1056"
+            - name: TZ
+              value: "Europe/Paris"
+          ports:
+            - name: http
+              containerPort: 11011
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: cleanuparr-config
