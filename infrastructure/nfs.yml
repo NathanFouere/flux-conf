@@ -1,5 +1,6 @@
 ---
 # cf . # cf . https://www.phillipsj.net/posts/k3s-enable-nfs-storage/
+# note ici "The provisioned storage limit is not enforced. The application can expand to use all the available storage regardless of the provisioned size." donc le storage demandé est juste cosmétique
 apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
