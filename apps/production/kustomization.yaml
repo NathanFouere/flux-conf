@@ -5,6 +5,7 @@ resources:
   - ../base/baikal
   - ../base/website
   - ../base/media-center
+  - ../base/blogmanon
 patches:
   - path: website-values.yaml
     target:

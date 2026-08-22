@@ -1,0 +1,15 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: wordpress
+  namespace: wordpress
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: kube-system
+  hostnames:
+    - manon.nathan-fouere.com
+  rules:
+    - backendRefs:
+        - name: wordpress
+          port: 80

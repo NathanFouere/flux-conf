@@ -1,0 +1,42 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: wordpress
+  namespace: wordpress
+spec:
+  releaseName: wordpress
+  chart:
+    spec:
+      chart: wordpress
+      version: "27.0.7"
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+  interval: 5m
+  install:
+    remediation:
+      retries: 3
+  values:
+    service:
+      type: ClusterIP
+    wordpressUsername: manon
+    wordpressFirstName: Manon
+    wordpressEmail: manon@nathan-fouere.com
+    wordpressBlogName: Le blog de Manon
+    wordpressScheme: https
+    existingSecret: wordpress-secrets
+    persistence:
+      enabled: true
+      storageClass: nfs
+      size: 10Gi
+    volumePermissions:
+      enabled: true
+    mariadb:
+      auth:
+        existingSecret: wordpress-secrets
+      primary:
+        persistence:
+          storageClass: nfs
+          size: 10Gi
+      volumePermissions:
+        enabled: true
