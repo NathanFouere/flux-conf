@@ -24,6 +24,7 @@ spec:
     wordpressEmail: manon@nathan-fouere.com
     wordpressBlogName: Le blog de Manon
     wordpressScheme: https
+    allowEmptyPassword: false
     extraEnvVars:
       - name: WORDPRESS_HOSTNAME
         value: manon.nathan-fouere.com
