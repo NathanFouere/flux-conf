@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paseo
+  labels:
+    app.kubernetes.io/name: paseo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: paseo
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: paseo
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: paseo
+          image: ghcr.io/getpaseo/paseo:latest
+          env:
+            - name: TZ
+              value: "Europe/Paris"
+            - name: PASEO_HOSTNAMES
+              value: "paseo.nathan-fouere.com"
+            - name: PASEO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: paseo-secrets
+                  key: paseo-password
+          ports:
+            - name: http
+              containerPort: 6767
+              protocol: TCP
+          volumeMounts:
+            - name: paseo-home
+              mountPath: /home/paseo
+            - name: paseo-workspace
+              mountPath: /workspace
+      volumes:
+        - name: paseo-home
+          persistentVolumeClaim:
+            claimName: paseo-home
+        - name: paseo-workspace
+          persistentVolumeClaim:
+            claimName: paseo-workspace

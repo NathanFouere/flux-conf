@@ -6,6 +6,7 @@ resources:
   - ../base/website
   - ../base/media-center
   - ../base/blogmanon
+  - ../base/paseo
 patches:
   - path: website-values.yaml
     target:
