@@ -18,100 +18,48 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        runAsUser: 10000
+        runAsGroup: 10000
+        fsGroup: 10000
         seccompProfile:
           type: RuntimeDefault
-      initContainers:
-        - name: copy-agent-src
-          image: nousresearch/hermes-agent:latest
-          command: ["cp", "-r", "/opt/hermes/.", "/agent-src/"]
-          volumeMounts:
-            - name: agent-src
-              mountPath: /agent-src
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop: ["ALL"]
       containers:
-        - name: hermes-agent
-          image: nousresearch/hermes-agent:latest
-          command: ["gateway", "run"]
+        - name: hermes-suite
+          image: ascensionoid/hermes-suite:2026.7.20-0.52.113
           env:
             - name: HERMES_HOME
-              value: /home/hermes/.hermes
+              value: /opt/data
+            - name: HERMES_DATA_DIR
+              value: /opt/data
+            - name: HERMES_UID
+              value: "10000"
+            - name: HERMES_GID
+              value: "10000"
             - name: GLM_API_KEY
               valueFrom:
                 secretKeyRef:
                   name: hermes-secrets
                   key: glm-api-key
-            - name: HERMES_TELEGRAM_TOKEN
+            - name: TELEGRAM_BOT_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: hermes-secrets
                   key: telegram-token
-            - name: API_SERVER_ENABLED
-              value: "true"
-            - name: API_SERVER_HOST
-              value: 0.0.0.0
-            - name: API_SERVER_KEY
+            - name: TELEGRAM_ALLOWED_USERS
               valueFrom:
                 secretKeyRef:
                   name: hermes-secrets
-                  key: api-server-key
-            - name: HERMES_TELEMETRY
-              value: "disabled"
-            - name: TZ
-              value: "Europe/Paris"
-          ports:
-            - name: gateway-api
-              containerPort: 8642
-              protocol: TCP
-          volumeMounts:
-            - name: hermes-data
-              mountPath: /home/hermes/.hermes
-            - name: skills
-              mountPath: /home/hermes/.hermes/skills
-          resources:
-            requests:
-              cpu: 250m
-              memory: 1Gi
-            limits:
-              cpu: "2"
-              memory: 4Gi
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
-        - name: hermes-webui
-          image: ghcr.io/nesquena/hermes-webui:latest
-          env:
-            - name: WANTED_UID
-              value: "1000"
-            - name: WANTED_GID
-              value: "1000"
-            - name: HERMES_WEBUI_HOST
-              value: 0.0.0.0
-            - name: HERMES_WEBUI_PORT
-              value: "8787"
-            - name: HERMES_WEBUI_STATE_DIR
-              value: /home/hermeswebui/.hermes/webui
-            - name: HERMES_WEBUI_DEFAULT_WORKSPACE
-              value: /home/hermeswebui/.hermes/workspace
-            - name: HERMES_API_URL
-              value: http://localhost:8642
-            - name: HERMES_WEBUI_GATEWAY_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: hermes-secrets
-                  key: api-server-key
+                  key: telegram-allowed-users
             - name: HERMES_WEBUI_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: hermes-secrets
                   key: webui-password
+            - name: API_SERVER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-secrets
+                  key: api-server-key
             - name: TZ
               value: "Europe/Paris"
           ports:
@@ -120,12 +68,9 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: hermes-data
-              mountPath: /home/hermeswebui/.hermes
+              mountPath: /opt/data
             - name: skills
-              mountPath: /home/hermeswebui/.hermes/skills
-            - name: agent-src
-              mountPath: /home/hermeswebui/.hermes/hermes-agent
-              readOnly: true
+              mountPath: /opt/data/skills
           resources:
             requests:
               cpu: 250m
@@ -144,5 +89,3 @@ spec:
         - name: skills
           persistentVolumeClaim:
             claimName: hermes-skills-pvc
-        - name: agent-src
-          emptyDir: {}
