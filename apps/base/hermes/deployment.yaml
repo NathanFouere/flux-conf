@@ -1,0 +1,148 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hermes-agent
+  labels:
+    app.kubernetes.io/name: hermes
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hermes
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hermes
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      initContainers:
+        - name: copy-agent-src
+          image: nousresearch/hermes-agent:latest
+          command: ["cp", "-r", "/opt/hermes/.", "/agent-src/"]
+          volumeMounts:
+            - name: agent-src
+              mountPath: /agent-src
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+      containers:
+        - name: hermes-agent
+          image: nousresearch/hermes-agent:latest
+          command: ["gateway", "run"]
+          env:
+            - name: HERMES_HOME
+              value: /home/hermes/.hermes
+            - name: GLM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-secrets
+                  key: glm-api-key
+            - name: HERMES_TELEGRAM_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-secrets
+                  key: telegram-token
+            - name: API_SERVER_ENABLED
+              value: "true"
+            - name: API_SERVER_HOST
+              value: 0.0.0.0
+            - name: API_SERVER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-secrets
+                  key: api-server-key
+            - name: HERMES_TELEMETRY
+              value: "disabled"
+            - name: TZ
+              value: "Europe/Paris"
+          ports:
+            - name: gateway-api
+              containerPort: 8642
+              protocol: TCP
+          volumeMounts:
+            - name: hermes-data
+              mountPath: /home/hermes/.hermes
+            - name: skills
+              mountPath: /home/hermes/.hermes/skills
+          resources:
+            requests:
+              cpu: "1"
+              memory: 2Gi
+            limits:
+              cpu: "2"
+              memory: 4Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+        - name: hermes-webui
+          image: ghcr.io/nesquena/hermes-webui:latest
+          env:
+            - name: WANTED_UID
+              value: "1000"
+            - name: WANTED_GID
+              value: "1000"
+            - name: HERMES_WEBUI_HOST
+              value: 0.0.0.0
+            - name: HERMES_WEBUI_PORT
+              value: "8787"
+            - name: HERMES_WEBUI_STATE_DIR
+              value: /home/hermeswebui/.hermes/webui
+            - name: HERMES_WEBUI_DEFAULT_WORKSPACE
+              value: /home/hermeswebui/.hermes/workspace
+            - name: HERMES_API_URL
+              value: http://localhost:8642
+            - name: HERMES_WEBUI_GATEWAY_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-secrets
+                  key: api-server-key
+            - name: HERMES_WEBUI_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-secrets
+                  key: webui-password
+            - name: TZ
+              value: "Europe/Paris"
+          ports:
+            - name: http
+              containerPort: 8787
+              protocol: TCP
+          volumeMounts:
+            - name: hermes-data
+              mountPath: /home/hermeswebui/.hermes
+            - name: skills
+              mountPath: /home/hermeswebui/.hermes/skills
+            - name: agent-src
+              mountPath: /home/hermeswebui/.hermes/hermes-agent
+              readOnly: true
+          resources:
+            requests:
+              cpu: "1"
+              memory: 2Gi
+            limits:
+              cpu: "2"
+              memory: 4Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+      volumes:
+        - name: hermes-data
+          persistentVolumeClaim:
+            claimName: hermes-memory-pvc
+        - name: skills
+          persistentVolumeClaim:
+            claimName: hermes-skills-pvc
+        - name: agent-src
+          emptyDir: {}
