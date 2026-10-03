@@ -15,9 +15,11 @@ spec:
     spec:
       containers:
         - name: siyuan
-          image: b3log/siyuan:latest
+          image: b3log/siyuan:v3.8.6
           args:
+            - serve
             - --workspace=/siyuan/workspace/
+            - --port=6806
             - --accessAuthCode=$(SIYUAN_ACCESS_AUTH_CODE)
           env:
             - name: SIYUAN_ACCESS_AUTH_CODE
