@@ -16,6 +16,7 @@ spec:
       labels:
         app.kubernetes.io/name: hermes
     spec:
+      shareProcessNamespace: true
       # L'image n'accepte que l'uid du user hermes (10000)
       securityContext:
         runAsNonRoot: true
