@@ -55,6 +55,8 @@ spec:
               value: "disabled"
             - name: TZ
               value: "Europe/Paris"
+            - name: GATEWAY_MULTIPLEX_PROFILES
+              value: "true"
           volumeMounts:
             - name: hermes-data
               mountPath: /opt/data
