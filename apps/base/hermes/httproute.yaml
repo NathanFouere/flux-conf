@@ -13,4 +13,4 @@ spec:
   rules:
     - backendRefs:
         - name: hermes-webui
-          port: 8787
+          port: 9119

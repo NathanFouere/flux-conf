@@ -16,6 +16,7 @@ spec:
       labels:
         app.kubernetes.io/name: hermes
     spec:
+      # L'image n'accepte que l'uid du user hermes (10000)
       securityContext:
         runAsNonRoot: true
         runAsUser: 10000
@@ -24,17 +25,11 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-        - name: hermes-suite
-          image: ascensionoid/hermes-suite:2026.7.20-0.52.113
+        - name: hermes-agent
+          image: nousresearch/hermes-agent:v2026.9.24
+          # Contourne l'entrypoint s6-overlay, qui exige de démarrer en root
+          command: ["hermes", "gateway", "run"]
           env:
-            - name: HERMES_HOME
-              value: /opt/data
-            - name: HERMES_DATA_DIR
-              value: /opt/data
-            - name: HERMES_UID
-              value: "10000"
-            - name: HERMES_GID
-              value: "10000"
             - name: GLM_API_KEY
               valueFrom:
                 secretKeyRef:
@@ -45,37 +40,80 @@ spec:
                 secretKeyRef:
                   name: hermes-secrets
                   key: telegram-token
-            - name: GH_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: hermes-secrets
-                  key: gh-token
             - name: TELEGRAM_ALLOWED_USERS
               valueFrom:
                 secretKeyRef:
                   name: hermes-secrets
                   key: telegram-allowed-users
-            - name: HERMES_WEBUI_PASSWORD
+            - name: GH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-secrets
+                  key: gh-token
+            - name: HERMES_TELEMETRY
+              value: "disabled"
+            - name: TZ
+              value: "Europe/Paris"
+          volumeMounts:
+            - name: hermes-data
+              mountPath: /opt/data
+            - name: skills
+              mountPath: /opt/data/skills
+            - name: agent-tmp
+              mountPath: /tmp
+          resources:
+            requests:
+              cpu: 250m
+              memory: 1Gi
+            limits:
+              cpu: "2"
+              memory: 4Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+        - name: hermes-dashboard
+          image: nousresearch/hermes-agent:v2026.9.24
+          command: ["hermes", "dashboard", "--host", "0.0.0.0", "--port", "9119", "--no-open"]
+          env:
+            - name: GLM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-secrets
+                  key: glm-api-key
+            - name: GH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-secrets
+                  key: gh-token
+            - name: HERMES_DASHBOARD_BASIC_AUTH_USERNAME
+              value: nathan
+            - name: HERMES_DASHBOARD_BASIC_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: hermes-secrets
                   key: webui-password
-            - name: API_SERVER_KEY
+            - name: HERMES_DASHBOARD_BASIC_AUTH_SECRET
               valueFrom:
                 secretKeyRef:
                   name: hermes-secrets
-                  key: api-server-key
+                  key: dashboard-auth-secret
+            - name: HERMES_TELEMETRY
+              value: "disabled"
             - name: TZ
               value: "Europe/Paris"
           ports:
             - name: http
-              containerPort: 8787
+              containerPort: 9119
               protocol: TCP
           volumeMounts:
             - name: hermes-data
               mountPath: /opt/data
             - name: skills
               mountPath: /opt/data/skills
+            - name: dashboard-tmp
+              mountPath: /tmp
           resources:
             requests:
               cpu: 250m
@@ -94,3 +132,7 @@ spec:
         - name: skills
           persistentVolumeClaim:
             claimName: hermes-skills-pvc
+        - name: agent-tmp
+          emptyDir: {}
+        - name: dashboard-tmp
+          emptyDir: {}
