@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: qbittorrent
-          image: lscr.io/linuxserver/qbittorrent
+          image: lscr.io/linuxserver/qbittorrent:5.2.4_v2.0.15-ls479
           resources:
             limits:
               memory: "2Gi"

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "labels": ["dependencies", "automated"],
+  "flux": {
+    "managerFilePatterns": ["/^(apps|clusters|infrastructure)/.+\\.ya?ml$/"]
+  },
+  "kubernetes": {
+    "managerFilePatterns": ["/^(apps|clusters|infrastructure)/.+\\.ya?ml$/"]
+  },
+  "packageRules": [
+    {
+      "description": "Image du site : déjà mise à jour par Flux",
+      "matchDepNames": ["docker.io/nathanfouere/website"],
+      "enabled": false
+    },
+    {
+      "description": "Tags linuxserver (media-center), ex. 4.0.20.3014-ls326",
+      "matchPackageNames": ["lscr.io/linuxserver/**"],
+      "versioning": "regex:^v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)[^-]*-ls(?<build>\\d+)$"
+    },
+    {
+      "description": "Tags hermes, ex. 2026.7.20-0.52.113",
+      "matchPackageNames": ["ascensionoid/hermes-suite"],
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)[.\\d]*-0\\.(?<build>\\d+)\\.(?<revision>\\d+)$"
+    }
+  ]
+}
