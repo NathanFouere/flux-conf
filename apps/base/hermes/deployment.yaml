@@ -64,6 +64,9 @@ spec:
               mountPath: /opt/data/skills
             - name: agent-tmp
               mountPath: /tmp
+            - name: github-profile-secrets
+              mountPath: /run/secrets/hermes-github
+              readOnly: true
           resources:
             requests:
               cpu: 250m
@@ -139,3 +142,19 @@ spec:
           emptyDir: {}
         - name: dashboard-tmp
           emptyDir: {}
+        # Secrets du profil Hermes `github`, un fichier par variable. Le profil les lit via
+        # `secrets.command` : en multiplexage, un profil secondaire ne voit pas l'env du pod.
+        - name: github-profile-secrets
+          projected:
+            defaultMode: 0440
+            sources:
+              - secret:
+                  name: hermes-secrets
+                  items:
+                    # Token fine-grained dédié à l'agent, limité aux dépôts qu'il gère
+                    - key: github-agent-token
+                      path: GH_TOKEN
+                    - key: telegram-allowed-users
+                      path: TELEGRAM_ALLOWED_USERS
+                    - key: telegram-github-token
+                      path: TELEGRAM_BOT_TOKEN
