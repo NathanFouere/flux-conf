@@ -129,6 +129,18 @@ spec:
               mountPath: /opt/data/skills
             - name: dashboard-tmp
               mountPath: /tmp
+            - name: github-profile-secrets
+              mountPath: /run/secrets/hermes-github
+              readOnly: true
+            - name: evenements-profile-secrets
+              mountPath: /run/secrets/hermes-evenements
+              readOnly: true
+            - name: veille-profile-secrets
+              mountPath: /run/secrets/hermes-veille
+              readOnly: true
+            - name: emplois-profile-secrets
+              mountPath: /run/secrets/hermes-emplois
+              readOnly: true
           resources:
             requests:
               cpu: 250m
