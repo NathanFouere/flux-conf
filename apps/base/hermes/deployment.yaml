@@ -172,10 +172,6 @@ spec:
                   items:
                     - key: github-agent-token
                       path: GH_TOKEN
-                    - key: telegram-allowed-users
-                      path: TELEGRAM_ALLOWED_USERS
-                    - key: telegram-github-token
-                      path: TELEGRAM_BOT_TOKEN
                     - key: glm-api-key
                       path: GLM_API_KEY
         - name: evenements-profile-secrets
