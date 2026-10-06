@@ -73,6 +73,9 @@ spec:
             - name: veille-profile-secrets
               mountPath: /run/secrets/hermes-veille
               readOnly: true
+            - name: emplois-profile-secrets
+              mountPath: /run/secrets/hermes-emplois
+              readOnly: true
           resources:
             requests:
               cpu: 250m
@@ -173,6 +176,15 @@ spec:
                     - key: glm-api-key
                       path: GLM_API_KEY
         - name: veille-profile-secrets
+          projected:
+            defaultMode: 0440
+            sources:
+              - secret:
+                  name: hermes-secrets
+                  items:
+                    - key: glm-api-key
+                      path: GLM_API_KEY
+        - name: emplois-profile-secrets
           projected:
             defaultMode: 0440
             sources:
