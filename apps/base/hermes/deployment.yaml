@@ -67,6 +67,12 @@ spec:
             - name: github-profile-secrets
               mountPath: /run/secrets/hermes-github
               readOnly: true
+            - name: evenements-profile-secrets
+              mountPath: /run/secrets/hermes-evenements
+              readOnly: true
+            - name: veille-profile-secrets
+              mountPath: /run/secrets/hermes-veille
+              readOnly: true
           resources:
             requests:
               cpu: 250m
@@ -155,5 +161,23 @@ spec:
                       path: TELEGRAM_ALLOWED_USERS
                     - key: telegram-github-token
                       path: TELEGRAM_BOT_TOKEN
+                    - key: glm-api-key
+                      path: GLM_API_KEY
+        - name: evenements-profile-secrets
+          projected:
+            defaultMode: 0440
+            sources:
+              - secret:
+                  name: hermes-secrets
+                  items:
+                    - key: glm-api-key
+                      path: GLM_API_KEY
+        - name: veille-profile-secrets
+          projected:
+            defaultMode: 0440
+            sources:
+              - secret:
+                  name: hermes-secrets
+                  items:
                     - key: glm-api-key
                       path: GLM_API_KEY
