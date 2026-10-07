@@ -67,6 +67,9 @@ spec:
             - name: github-profile-secrets
               mountPath: /run/secrets/hermes-github
               readOnly: true
+            - name: calendar-profile-secrets
+              mountPath: /run/secrets/hermes-calendar
+              readOnly: true
             - name: evenements-profile-secrets
               mountPath: /run/secrets/hermes-evenements
               readOnly: true
@@ -132,6 +135,9 @@ spec:
             - name: github-profile-secrets
               mountPath: /run/secrets/hermes-github
               readOnly: true
+            - name: calendar-profile-secrets
+              mountPath: /run/secrets/hermes-calendar
+              readOnly: true
             - name: evenements-profile-secrets
               mountPath: /run/secrets/hermes-evenements
               readOnly: true
@@ -172,6 +178,23 @@ spec:
                   items:
                     - key: github-agent-token
                       path: GH_TOKEN
+                    - key: telegram-allowed-users
+                      path: TELEGRAM_ALLOWED_USERS
+                    - key: glm-api-key
+                      path: GLM_API_KEY
+        - name: calendar-profile-secrets
+          projected:
+            defaultMode: 0440
+            sources:
+              - secret:
+                  name: hermes-secrets
+                  items:
+                    - key: baikal-url
+                      path: CALDAV_URL
+                    - key: baikal-username
+                      path: CALDAV_USERNAME
+                    - key: baikal-password
+                      path: CALDAV_PASSWORD
                     - key: telegram-allowed-users
                       path: TELEGRAM_ALLOWED_USERS
                     - key: glm-api-key
