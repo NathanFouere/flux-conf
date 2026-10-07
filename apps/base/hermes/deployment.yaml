@@ -195,6 +195,10 @@ spec:
                       path: CALDAV_USERNAME
                     - key: baikal-password
                       path: CALDAV_PASSWORD
+                    - key: telegram-allowed-users
+                      path: TELEGRAM_ALLOWED_USERS
+                    - key: glm-api-key
+                      path: GLM_API_KEY
         - name: evenements-profile-secrets
           projected:
             defaultMode: 0440
