@@ -25,3 +25,14 @@ spec:
       ports:
         - protocol: TCP
           port: 443
+    # API kernel de SiYuan (siyuan.siyuan.svc.cluster.local:6806) pour le profil notes
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: siyuan
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: siyuan
+      ports:
+        - protocol: TCP
+          port: 6806

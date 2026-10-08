@@ -79,6 +79,9 @@ spec:
             - name: emplois-profile-secrets
               mountPath: /run/secrets/hermes-emplois
               readOnly: true
+            - name: notes-profile-secrets
+              mountPath: /run/secrets/hermes-notes
+              readOnly: true
           resources:
             requests:
               cpu: 250m
@@ -146,6 +149,9 @@ spec:
               readOnly: true
             - name: emplois-profile-secrets
               mountPath: /run/secrets/hermes-emplois
+              readOnly: true
+            - name: notes-profile-secrets
+              mountPath: /run/secrets/hermes-notes
               readOnly: true
           resources:
             requests:
@@ -226,3 +232,16 @@ spec:
                   items:
                     - key: glm-api-key
                       path: GLM_API_KEY
+        - name: notes-profile-secrets
+          projected:
+            defaultMode: 0440
+            sources:
+              - secret:
+                  name: hermes-secrets
+                  items:
+                    - key: glm-api-key
+                      path: GLM_API_KEY
+                    - key: telegram-allowed-users
+                      path: TELEGRAM_ALLOWED_USERS
+                    - key: siyuan-token
+                      path: SIYUAN_TOKEN
