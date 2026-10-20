@@ -10,19 +10,8 @@ spec:
   hostnames:
     - anki.nathan-fouere.com
   rules:
-    # Protocole de synchro Anki (collection et médias) : endpoint https://anki.nathan-fouere.com/
-    # à renseigner dans AnkiDroid / AnkiMobile / Anki Desktop
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /sync
-        - path:
-            type: PathPrefix
-            value: /msync
-      backendRefs:
+    # Serveur de synchro : endpoint https://anki.nathan-fouere.com/ à renseigner dans AnkiDroid,
+    # AnkiMobile et Anki Desktop
+    - backendRefs:
         - name: anki-sync
           port: 8080
-    # Tout le reste : Anki Desktop dans le navigateur (KasmVNC, basic auth)
-    - backendRefs:
-        - name: anki-desktop
-          port: 3000

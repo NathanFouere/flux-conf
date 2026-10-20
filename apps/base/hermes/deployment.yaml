@@ -266,3 +266,5 @@ spec:
                       path: TELEGRAM_ALLOWED_USERS
                     - key: siyuan-token
                       path: SIYUAN_TOKEN
+                    - key: anki-sync-user
+                      path: ANKI_SYNC_USER

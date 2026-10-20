@@ -5,5 +5,4 @@ resources:
   - namespace.yaml
   - secrets.yaml
   - sync
-  - desktop
   - httproute.yaml
