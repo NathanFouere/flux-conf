@@ -36,3 +36,14 @@ spec:
       ports:
         - protocol: TCP
           port: 6806
+    # AnkiConnect d'Anki Desktop (anki-desktop.anki.svc.cluster.local:8765) pour le profil anki
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: anki
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: anki-desktop
+      ports:
+        - protocol: TCP
+          port: 8765

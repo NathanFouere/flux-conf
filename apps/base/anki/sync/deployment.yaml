@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anki-sync
+  labels:
+    app.kubernetes.io/name: anki-sync
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: anki-sync
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: anki-sync
+    spec:
+      containers:
+        - name: anki-sync
+          image: chrislongros/anki-sync-server-enhanced:26.09.3
+          env:
+            # Compte de synchro, au format utilisateur:mot de passe
+            - name: SYNC_USER1
+              valueFrom:
+                secretKeyRef:
+                  name: anki-secrets
+                  key: sync-user
+            - name: BACKUP_ENABLED
+              value: "true"
+            - name: BACKUP_RETENTION_DAYS
+              value: "14"
+            - name: TZ
+              value: "Europe/Paris"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 1Gi
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: backups
+              mountPath: /backups
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: anki-sync-data
+        - name: backups
+          persistentVolumeClaim:
+            claimName: anki-sync-backups

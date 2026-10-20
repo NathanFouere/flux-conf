@@ -82,6 +82,9 @@ spec:
             - name: notes-profile-secrets
               mountPath: /run/secrets/hermes-notes
               readOnly: true
+            - name: anki-profile-secrets
+              mountPath: /run/secrets/hermes-anki
+              readOnly: true
           resources:
             requests:
               cpu: 250m
@@ -153,6 +156,9 @@ spec:
             - name: notes-profile-secrets
               mountPath: /run/secrets/hermes-notes
               readOnly: true
+            - name: anki-profile-secrets
+              mountPath: /run/secrets/hermes-anki
+              readOnly: true
           resources:
             requests:
               cpu: 250m
@@ -186,6 +192,8 @@ spec:
                       path: GH_TOKEN
                     - key: telegram-allowed-users
                       path: TELEGRAM_ALLOWED_USERS
+                    - key: siyuan-token
+                      path: SIYUAN_TOKEN
                     - key: glm-api-key
                       path: GLM_API_KEY
         - name: calendar-profile-secrets
@@ -233,6 +241,19 @@ spec:
                     - key: glm-api-key
                       path: GLM_API_KEY
         - name: notes-profile-secrets
+          projected:
+            defaultMode: 0440
+            sources:
+              - secret:
+                  name: hermes-secrets
+                  items:
+                    - key: glm-api-key
+                      path: GLM_API_KEY
+                    - key: telegram-allowed-users
+                      path: TELEGRAM_ALLOWED_USERS
+                    - key: siyuan-token
+                      path: SIYUAN_TOKEN
+        - name: anki-profile-secrets
           projected:
             defaultMode: 0440
             sources:

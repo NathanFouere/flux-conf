@@ -1,0 +1,29 @@
+# AnkiConnect n'a pas d'authentification (l'image réécrit sa config avec apiKey: null à chaque
+# démarrage) : seul Hermes peut joindre le port 8765. L'interface web (3000) reste ouverte à la
+# gateway, protégée par la basic auth de KasmVNC.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: anki-desktop-ingress
+  labels:
+    app.kubernetes.io/name: anki-desktop
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: anki-desktop
+  policyTypes:
+    - Ingress
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 3000
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: hermes
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: hermes
+      ports:
+        - protocol: TCP
+          port: 8765
