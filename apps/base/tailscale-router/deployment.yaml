@@ -1,0 +1,54 @@
+# Routeur Tailscale de secours : annonce le réseau local au tailnet, pour garder un accès à
+# distance (kubectl, SSH) même quand le bastion raspberry-pi3-1 est hors ligne.
+# Mode userspace : ni NET_ADMIN ni /dev/net/tun. Clé éphémère : l'appareil disparaît du tailnet
+# quand le pod s'arrête, et son état n'a pas besoin d'être persistant.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tailscale-router
+  labels:
+    app.kubernetes.io/name: tailscale-router
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tailscale-router
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: tailscale-router
+    spec:
+      containers:
+        - name: tailscale
+          image: ghcr.io/tailscale/tailscale:v1.104.1
+          env:
+            - name: TS_AUTHKEY
+              valueFrom:
+                secretKeyRef:
+                  name: tailscale-auth
+                  key: TS_AUTHKEY
+            - name: TS_HOSTNAME
+              value: k3s-router
+            - name: TS_ROUTES
+              value: "192.168.1.0/24"
+            - name: TS_USERSPACE
+              value: "true"
+            # État en emptyDir plutôt que dans un Secret Kubernetes (pas de RBAC à donner)
+            - name: TS_KUBE_SECRET
+              value: ""
+            - name: TS_STATE_DIR
+              value: /var/lib/tailscale
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+          volumeMounts:
+            - name: state
+              mountPath: /var/lib/tailscale
+      volumes:
+        - name: state
+          emptyDir: {}

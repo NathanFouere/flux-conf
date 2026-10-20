@@ -9,6 +9,7 @@ resources:
   - ../base/hermes
   - ../base/anki
   - ../base/open-webui
+  - ../base/tailscale-router
 patches:
   - path: website-values.yaml
     target:
