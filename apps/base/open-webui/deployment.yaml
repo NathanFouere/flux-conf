@@ -27,7 +27,6 @@ spec:
                 secretKeyRef:
                   name: open-webui-secrets
                   key: webui-secret-key
-            # Compte admin créé au premier démarrage, ce qui ferme aussi les inscriptions
             - name: WEBUI_ADMIN_EMAIL
               value: "nathan@nathan-fouere.com"
             - name: WEBUI_ADMIN_NAME
@@ -39,8 +38,6 @@ spec:
                   key: admin-password
             - name: ENABLE_SIGNUP
               value: "false"
-            # Connexion initiale (modèles GLM, forfait coding de z.ai, même clé que Hermes). Les
-            # connexions sont ensuite gérées dans Réglages admin → Connexions (Mistral, DeepSeek…)
             - name: ENABLE_OLLAMA_API
               value: "false"
             - name: OPENAI_API_BASE_URLS
