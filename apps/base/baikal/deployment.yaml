@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: baikal
-          image: ckulka/baikal:0.10.1-nginx
+          # ckulka/baikal nginx images stopped getting PHP updates (8.1 EOL); this one tracks php:8.3-fpm
+          image: srstone/dkr-baikal:0.13.0
           ports:
             - name: http
               containerPort: 80
