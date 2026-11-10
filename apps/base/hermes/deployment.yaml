@@ -85,6 +85,9 @@ spec:
             - name: anki-profile-secrets
               mountPath: /run/secrets/hermes-anki
               readOnly: true
+            - name: sport-profile-secrets
+              mountPath: /run/secrets/hermes-sport
+              readOnly: true
           resources:
             requests:
               cpu: 250m
@@ -158,6 +161,9 @@ spec:
               readOnly: true
             - name: anki-profile-secrets
               mountPath: /run/secrets/hermes-anki
+              readOnly: true
+            - name: sport-profile-secrets
+              mountPath: /run/secrets/hermes-sport
               readOnly: true
           resources:
             requests:
@@ -268,3 +274,16 @@ spec:
                       path: SIYUAN_TOKEN
                     - key: anki-sync-user
                       path: ANKI_SYNC_USER
+        - name: sport-profile-secrets
+          projected:
+            defaultMode: 0440
+            sources:
+              - secret:
+                  name: hermes-secrets
+                  items:
+                    - key: glm-api-key
+                      path: GLM_API_KEY
+                    - key: telegram-allowed-users
+                      path: TELEGRAM_ALLOWED_USERS
+                    - key: siyuan-token
+                      path: SIYUAN_TOKEN
