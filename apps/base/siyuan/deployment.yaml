@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: siyuan
-          image: b3log/siyuan:v3.8.6
+          image: b3log/siyuan:v3.8.10
           args:
             - serve
             - --workspace=/siyuan/workspace/
