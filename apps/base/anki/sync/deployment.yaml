@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: anki-sync
-          image: chrislongros/anki-sync-server-enhanced:26.09.3
+          image: chrislongros/anki-sync-server-enhanced:26.09.4
           env:
             # Compte de synchro, au format utilisateur:mot de passe
             - name: SYNC_USER1
