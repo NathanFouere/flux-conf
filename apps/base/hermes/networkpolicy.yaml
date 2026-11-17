@@ -47,3 +47,14 @@ spec:
       ports:
         - protocol: TCP
           port: 8080
+    # API d'Open WebUI (open-webui.open-webui.svc.cluster.local:8080) pour la synchro Zotero du profil veille
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: open-webui
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: open-webui
+      ports:
+        - protocol: TCP
+          port: 8080

@@ -244,6 +244,11 @@ spec:
                       path: ZOTERO_API_KEY
                     - key: zotero-library-id
                       path: ZOTERO_LIBRARY_ID
+              - secret:
+                  name: hermes-secrets
+                  items:
+                    - key: openwebui-api-key
+                      path: OPENWEBUI_API_KEY
         - name: emplois-profile-secrets
           projected:
             defaultMode: 0440
