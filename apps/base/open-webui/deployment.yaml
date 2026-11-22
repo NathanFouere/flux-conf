@@ -64,12 +64,6 @@ spec:
               path: /health
               port: 8080
             periodSeconds: 10
-          resources:
-            requests:
-              cpu: 100m
-              memory: 512Mi
-            limits:
-              memory: 2Gi
           volumeMounts:
             - name: data
               mountPath: /app/backend/data
