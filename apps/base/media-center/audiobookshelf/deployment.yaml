@@ -23,6 +23,16 @@ spec:
           env:
             - name: TZ
               value: Europe/Paris
+            # La box (192.168.1.1) fait du DNS64 : AAAA synthétiques 64:ff9b::/96.
+            # Node (Happy Eyeballs) les essaie et ssrf-req-filter les bloque
+            # ("Call to 64:ff9b::… is blocked") -> aucun flux podcast.
+            # Bug connu : https://github.com/advplyr/audiobookshelf/issues/5288
+            # Fix en cours : https://github.com/advplyr/audiobookshelf/pull/5377
+            # Contournement proposé dans le ticket : désactive le filtre SSRF
+            # (cf. CVE-2023-51697), sans autre protection réseau sur ce pod.
+            # TODO: retirer dès qu'une version d'audiobookshelf inclut la PR #5377.
+            - name: DISABLE_SSRF_REQUEST_FILTER
+              value: "1"
           ports:
             - name: http
               containerPort: 80
