@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - pvc-media.yaml
   - pvc-downloads.yaml
+  - pvc-music.yaml
   - protonvpn-secret.yaml
   - jellyfin
   - radarr
@@ -15,3 +16,5 @@ resources:
   - cleanuparr
   - flaresolverr
   - audiobookshelf
+  - lidarr
+  - navidrome

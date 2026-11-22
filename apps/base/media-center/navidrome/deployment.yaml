@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: navidrome
+  namespace: media
+  labels:
+    app.kubernetes.io/name: navidrome
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: navidrome
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: navidrome
+    spec:
+      securityContext:
+        # l'image ignore PUID/PGID ; même uid/gid que lidarr pour lire /music
+        runAsUser: 1057
+        runAsGroup: 1056
+        fsGroup: 1056
+      containers:
+        - name: navidrome
+          image: navidrome/navidrome:0.64.2
+          env:
+            - name: TZ
+              value: Europe/Paris
+            - name: ND_BASEURL
+              value: https://navidrome.nathan-fouere.com
+            #  le watcher Navidrome repose sur inotify
+            # (core/storage/local/watch_events_linux.go), qui ne voit pas les
+            # écritures distantes sur NFS (man inotify(7)). Désactivé par défaut :
+            # https://www.navidrome.org/docs/usage/configuration/options/
+            - name: ND_SCANNER_SCHEDULE
+              value: "@every 1h"
+          ports:
+            - name: http
+              containerPort: 4533
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: http
+            periodSeconds: 10
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: music
+              mountPath: /music
+              readOnly: true
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: navidrome-data
+        - name: music
+          persistentVolumeClaim:
+            claimName: music
