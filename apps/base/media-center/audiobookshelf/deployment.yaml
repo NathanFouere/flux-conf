@@ -20,6 +20,11 @@ spec:
       containers:
         - name: audiobookshelf
           image: advplyr/audiobookshelf:2.38.0
+          resources:
+            requests:
+              memory: 320Mi
+            limits:
+              memory: 1Gi
           env:
             - name: TZ
               value: Europe/Paris

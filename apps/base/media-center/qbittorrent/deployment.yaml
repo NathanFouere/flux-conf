@@ -18,6 +18,11 @@ spec:
       containers:
         - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:5.3.0_v2.1.2-ls487
+          resources:
+            requests:
+              memory: 768Mi
+            limits:
+              memory: 1.5Gi
           env:
             - name: PUID
               value: "1057"
@@ -34,6 +39,11 @@ spec:
               mountPath: /downloads
         - name: gluetun
           image: ghcr.io/qdm12/gluetun:v3.41.3
+          resources:
+            requests:
+              memory: 64Mi
+            limits:
+              memory: 128Mi
           env:
             - name: VPN_SERVICE_PROVIDER
               value: "protonvpn"

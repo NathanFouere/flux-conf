@@ -18,6 +18,11 @@ spec:
       containers:
         - name: bazarr
           image: lscr.io/linuxserver/bazarr:v1.6.2-ls372
+          resources:
+            requests:
+              memory: 384Mi
+            limits:
+              memory: 640Mi
           env:
             - name: PUID
               value: "1057"

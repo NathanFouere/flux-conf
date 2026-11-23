@@ -25,6 +25,11 @@ spec:
       containers:
         - name: navidrome
           image: navidrome/navidrome:0.64.2
+          resources:
+            requests:
+              memory: 64Mi
+            limits:
+              memory: 320Mi
           env:
             - name: TZ
               value: Europe/Paris

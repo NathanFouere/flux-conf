@@ -19,6 +19,11 @@ spec:
       containers:
         - name: open-webui
           image: ghcr.io/open-webui/open-webui:v0.13.3
+          resources:
+            requests:
+              memory: 1.5Gi
+            limits:
+              memory: 2Gi
           env:
             - name: WEBUI_URL
               value: "https://chat.nathan-fouere.com"

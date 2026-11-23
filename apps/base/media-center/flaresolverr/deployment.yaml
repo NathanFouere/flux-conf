@@ -18,6 +18,11 @@ spec:
       containers:
         - name: flaresolverr
           image: flaresolverr/flaresolverr:v3.5.2
+          resources:
+            requests:
+              memory: 1Gi
+            limits:
+              memory: 2.5Gi
           env:
             - name: TZ
               value: "Europe/Paris"

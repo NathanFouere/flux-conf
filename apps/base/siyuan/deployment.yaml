@@ -16,6 +16,11 @@ spec:
       containers:
         - name: siyuan
           image: b3log/siyuan:v3.8.10
+          resources:
+            requests:
+              memory: 384Mi
+            limits:
+              memory: 768Mi
           args:
             - serve
             - --workspace=/siyuan/workspace/

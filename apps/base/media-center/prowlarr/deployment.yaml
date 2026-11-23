@@ -18,6 +18,11 @@ spec:
       containers:
         - name: prowlarr
           image: lscr.io/linuxserver/prowlarr:2.7.0.5723-ls168
+          resources:
+            requests:
+              memory: 320Mi
+            limits:
+              memory: 640Mi
           env:
             - name: PUID
               value: "1057"

@@ -28,6 +28,11 @@ spec:
       containers:
         - name: hermes-agent
           image: nousresearch/hermes-agent:v2026.9.24
+          resources:
+            requests:
+              memory: 1.5Gi
+            limits:
+              memory: 3.5Gi
           # Contourne l'entrypoint s6-overlay, qui exige de démarrer en root
           command: ["hermes", "gateway", "run"]
           env:
@@ -95,6 +100,11 @@ spec:
               drop: ["ALL"]
         - name: hermes-dashboard
           image: nousresearch/hermes-agent:v2026.9.24
+          resources:
+            requests:
+              memory: 576Mi
+            limits:
+              memory: 1Gi
           command: ["hermes", "dashboard", "--host", "0.0.0.0", "--port", "9119", "--no-open"]
           env:
             - name: GLM_API_KEY

@@ -18,6 +18,11 @@ spec:
       containers:
         - name: cleanuparr
           image: ghcr.io/cleanuparr/cleanuparr:2.11.0
+          resources:
+            requests:
+              memory: 384Mi
+            limits:
+              memory: 640Mi
           env:
             - name: PORT
               value: "11011"

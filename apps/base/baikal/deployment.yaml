@@ -17,6 +17,11 @@ spec:
         - name: baikal
           # ckulka/baikal nginx images stopped getting PHP updates (8.1 EOL); this one tracks php:8.3-fpm
           image: srstone/dkr-baikal:0.13.0
+          resources:
+            requests:
+              memory: 64Mi
+            limits:
+              memory: 128Mi
           ports:
             - name: http
               containerPort: 80

@@ -19,6 +19,11 @@ spec:
       containers:
         - name: anki-sync
           image: chrislongros/anki-sync-server-enhanced:26.09.4
+          resources:
+            requests:
+              memory: 64Mi
+            limits:
+              memory: 256Mi
           env:
             # Compte de synchro, au format utilisateur:mot de passe
             - name: SYNC_USER1
