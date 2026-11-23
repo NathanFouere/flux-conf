@@ -6,7 +6,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path # base SQLite : à garder hors stockage réseau
+  storageClassName: nfs
   resources:
     requests:
       storage: 2Gi

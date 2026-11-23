@@ -6,7 +6,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path # SQLite : la doc ABS interdit le stockage réseau pour /config
+  storageClassName: nfs
   resources:
     requests:
       storage: 1Gi
