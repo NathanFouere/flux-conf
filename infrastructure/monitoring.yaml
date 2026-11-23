@@ -113,6 +113,16 @@ spec:
         serviceMonitorSelectorNilUsesHelmValues: false # permet de monitorer lensembles des ServiceMonitors de tt les namespaces
     nodeExporter:
       enabled: true
+    prometheus-node-exporter:
+      tolerations:
+        # Valeur par défaut du chart
+        - effect: NoSchedule
+          operator: Exists
+        # Taint du plan de contrôle (vm-k3s-s, cf. nix-cfg k3s-vm.nix), sinon son node-exporter est chassé
+        - key: CriticalAddonsOnly
+          operator: Equal
+          value: "true"
+          effect: NoExecute
     kubeStateMetrics:
       enabled: true
     alertmanager:
