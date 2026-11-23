@@ -188,6 +188,13 @@ spec:
                       path: SIYUAN_TOKEN
                     - key: glm-api-key
                       path: GLM_API_KEY
+              - secret:
+                  name: hermes-secrets
+                  items:
+                    - key: zotero-api-key
+                      path: ZOTERO_API_KEY
+                    - key: zotero-library-id
+                      path: ZOTERO_LIBRARY_ID
         - name: calendar-profile-secrets
           projected:
             defaultMode: 0440
